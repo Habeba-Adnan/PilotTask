@@ -18,22 +18,24 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (ProfileViewModel profile in Model)
+         @if (Model != null)
         {
-            <tr>
-                <td>@profile.FirstName</td>
-                <td>@profile.LastName</td>
-                <td>@profile.DateOfBirth</td>
-                <td>@profile.EmailId</td>
-                <td>@profile.PhoneNumber</td>
-                <td>
-                    <a asp-action="Details"asp-route-ProfileId="@profile.ProfileId" class="btn btn-info">Details</a>
-                    @* <a asp-action="Update" asp-route-ProfileId="@profile.ProfileId" class="btn btn-warning">Update</a> *@
-                    <a asp-action="Delete" asp-route-ProfileId="@profile.ProfileId" class="btn btn-danger">Delete</a>
-                    <a asp-action="Create" asp-controller="Task" asp-route-ProfileId="@profile.ProfileId" class="btn btn-success">Add Task</a>
-                </td>
-            </tr>
+            @foreach (ProfileViewModel profile in Model)
+            {
+                <tr>
+                    <td>@profile.FirstName</td>
+                    <td>@profile.LastName</td>
+                    <td>@profile.DateOfBirth</td>
+                    <td>@profile.EmailId</td>
+                    <td>@profile.PhoneNumber</td>
+                    <td>
+                        <a asp-action="Details"asp-route-ProfileId="@profile.ProfileId" class="btn btn-info">Details</a>
+                        @* <a asp-action="Update" asp-route-ProfileId="@profile.ProfileId" class="btn btn-warning">Update</a> *@
+                        <a asp-action="Delete" asp-route-ProfileId="@profile.ProfileId" class="btn btn-danger">Delete</a>
+                        <a asp-action="Create" asp-controller="Task" asp-route-ProfileId="@profile.ProfileId" class="btn btn-success">Add Task</a>
+                    </td>
+                </tr>
+            }
         }
-
     </tbody>
 </table>

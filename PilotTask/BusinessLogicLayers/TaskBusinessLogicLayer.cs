@@ -67,7 +67,7 @@ namespace PilotTask.BusinessLogicLayers
             try
             {
                 List<Tasks> tasks= taskDataAccessLayer.GetTasks();
-                return tasks.Select(t => new TaskViewModel
+                return tasks?.Select(t => new TaskViewModel
                 {
                     ProfileId = t.ProfileId,
                     Id= t.Id,
@@ -114,7 +114,7 @@ namespace PilotTask.BusinessLogicLayers
             try
             {
                 List<Tasks> tasks= taskDataAccessLayer.GetTasksByProfileId(ProfileId);
-                return tasks.Select(t => new TaskViewModel
+                return tasks?.Select(t => new TaskViewModel
                 {
                     ProfileId = t.ProfileId,
                     Id = t.Id,

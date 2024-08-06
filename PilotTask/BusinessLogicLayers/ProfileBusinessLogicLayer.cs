@@ -74,7 +74,7 @@ namespace PilotTask.BusinessLogicLayers
             {
                 List<Profiles> profiles = profileDataAccessLayer.GetProfiles();
                 // Convert List<Profiles> to List<ProfileViewModel>
-                return profiles.Select(p => new ProfileViewModel
+                return profiles?.Select(p => new ProfileViewModel
                 {
                     ProfileId = p.ProfileId,
                     FirstName = p.FirstName,

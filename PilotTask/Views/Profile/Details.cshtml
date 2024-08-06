@@ -8,6 +8,7 @@
 <h2>Profile</h2>
 
 <hr />
+
 <dl class="row">
     <dt class="col-sm-2">First Name</dt>
     <dd class="col-sm-10">@Model.FirstName</dd>
@@ -25,14 +26,18 @@
     <dd class="col-sm-10">@Model.EmailId</dd>
 
         <dt class="col-sm-2">Tasks</dt>
+
         <dd class="col-sm-10">
             <form asp-action="Details" asp-controller="Task" method="get">
                 <select name="Id" class="form-control" onchange="this.form.submit()">
                     <option value="">Select a task</option>
+                    @if (ViewBag.Tasks != null)
+        {
                     @foreach (var task in ViewBag.Tasks)
                     {
                         <option value="@task.Id">@task.TaskName</option>
                     }
+        }
                 </select>
             </form>
         </dd>
