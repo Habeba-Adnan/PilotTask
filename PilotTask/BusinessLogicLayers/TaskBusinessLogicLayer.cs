@@ -6,9 +6,9 @@ namespace PilotTask.BusinessLogicLayers
     public class TaskBusinessLogicLayer
     {
         private TaskDataAccessLayer taskDataAccessLayer;
-        public TaskBusinessLogicLayer() 
+        public TaskBusinessLogicLayer(TaskDataAccessLayer taskDataAccessLayer) 
         {
-            taskDataAccessLayer = new TaskDataAccessLayer();
+            this.taskDataAccessLayer = taskDataAccessLayer;
         }
         public void AddTask(TaskViewModel taskViewModel)
         {

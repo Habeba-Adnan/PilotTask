@@ -9,9 +9,9 @@ namespace PilotTask.DataAccessLayers
 
         private DatabaseHelper databaseHelper;
 
-        public ProfileDataAccessLayer() 
+        public ProfileDataAccessLayer(DatabaseHelper databaseHelper) 
         {
-            databaseHelper = new DatabaseHelper();
+            this.databaseHelper =  databaseHelper;
         }
         
         public List<Profiles> GetProfiles()

@@ -8,9 +8,9 @@ namespace PilotTask.BusinessLogicLayers
     public class ProfileBusinessLogicLayer
     {
         private ProfileDataAccessLayer profileDataAccessLayer;
-        public ProfileBusinessLogicLayer()
+        public ProfileBusinessLogicLayer(ProfileDataAccessLayer profileDataAccessLayer)
         {
-            profileDataAccessLayer = new ProfileDataAccessLayer();
+            this.profileDataAccessLayer = profileDataAccessLayer;
         }
 
         public void AddProfile(ProfileViewModel profileViewModel)

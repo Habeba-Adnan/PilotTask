@@ -10,9 +10,9 @@ namespace PilotTask.DataAccessLayers
     {
         private DatabaseHelper databaseHelper;
 
-        public TaskDataAccessLayer()
+        public TaskDataAccessLayer(DatabaseHelper databaseHelper)
         {
-            databaseHelper = new DatabaseHelper();
+            this.databaseHelper = databaseHelper;
         }
 
         public List<Tasks> GetTasks()

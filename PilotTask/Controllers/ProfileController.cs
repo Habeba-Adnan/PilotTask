@@ -9,10 +9,10 @@ namespace PilotTask.Controllers
     {
         private ProfileBusinessLogicLayer profileBusinessLogicLayer;
         private TaskBusinessLogicLayer taskBusinessLogicLayer;
-        public ProfileController() 
+        public ProfileController(ProfileBusinessLogicLayer profileBusinessLogicLayer, TaskBusinessLogicLayer taskBusinessLogicLayer) 
         {
-            profileBusinessLogicLayer = new ProfileBusinessLogicLayer();
-            taskBusinessLogicLayer = new TaskBusinessLogicLayer();
+            this.profileBusinessLogicLayer = profileBusinessLogicLayer;
+            this.taskBusinessLogicLayer = taskBusinessLogicLayer;
         }
 
         public IActionResult Index()

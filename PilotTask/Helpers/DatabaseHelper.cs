@@ -5,12 +5,19 @@ namespace PilotTask.Helpers
 {
     public class DatabaseHelper
     {
-        private string ConnectionString = @"Data Source=DESKTOP-QLS20Q3;Initial Catalog=Pilot;Integrated Security=True;Trust Server Certificate=True";
+      
+        private readonly string connectionString;
+
+        public DatabaseHelper(IConfiguration configuration)
+        {
+            connectionString = configuration.GetConnectionString("DefaultConnection");
+        }
 
         public SqlConnection GetSqlConnection()
         {
-            return new SqlConnection(ConnectionString);
+            return new SqlConnection(connectionString);
         }
+
 
         public void ExecuteNonQuery(string StoredProcedure , SqlParameter[] sqlParameters )
         {
