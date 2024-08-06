@@ -1,0 +1,30 @@
+﻿@model TaskViewModel
+
+@{
+    ViewBag.Title = "Task Details";
+}
+<div>
+
+    <h2>Profile</h2>
+
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Task Name</dt>
+        <dd class="col-sm-10">@Model.TaskName</dd>
+
+        <dt class="col-sm-2">Task Description</dt>
+        <dd class="col-sm-10">@Model.TaskDescription</dd>
+
+        <dt class="col-sm-2">Start Time</dt>
+        <dd class="col-sm-10">@Model.StartTime.ToShortDateString()</dd>
+
+        <dt class="col-sm-2">Status</dt>
+        <dd class="col-sm-10">@Model.Status</dd>
+
+        
+    </dl>
+</div>
+
+<a asp-action="Update" asp-route-Id="@Model.Id" class="btn btn-warning">Update</a>
+<a asp-action="Delete" asp-route-Id="@Model.Id" class="btn btn-danger">Delete</a>
+<a asp-action="Details" asp-route-ProfileId="@Model.ProfileId" asp-controller="Profile" class="btn btn-info">Back</a>

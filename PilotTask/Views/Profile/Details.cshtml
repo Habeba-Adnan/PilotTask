@@ -1,0 +1,44 @@
+﻿@model ProfileViewModel
+
+@{
+    ViewBag.Title = "Profile Details";
+}
+<div>
+
+<h2>Profile</h2>
+
+<hr />
+<dl class="row">
+    <dt class="col-sm-2">First Name</dt>
+    <dd class="col-sm-10">@Model.FirstName</dd>
+
+    <dt class="col-sm-2">Last Name</dt>
+    <dd class="col-sm-10">@Model.LastName</dd>
+
+    <dt class="col-sm-2">Date of Birth</dt>
+    <dd class="col-sm-10">@Model.DateOfBirth.ToShortDateString()</dd>
+
+    <dt class="col-sm-2">Phone Number</dt>
+    <dd class="col-sm-10">@Model.PhoneNumber</dd>
+
+    <dt class="col-sm-2">Email Id</dt>
+    <dd class="col-sm-10">@Model.EmailId</dd>
+
+        <dt class="col-sm-2">Tasks</dt>
+        <dd class="col-sm-10">
+            <form asp-action="Details" asp-controller="Task" method="get">
+                <select name="Id" class="form-control" onchange="this.form.submit()">
+                    <option value="">Select a task</option>
+                    @foreach (var task in ViewBag.Tasks)
+                    {
+                        <option value="@task.Id">@task.TaskName</option>
+                    }
+                </select>
+            </form>
+        </dd>
+
+</dl>
+</div>
+
+<a asp-action="Update" asp-route-ProfileId="@Model.ProfileId" class="btn btn-warning">Update</a>
+<a asp-action="Index" class="btn btn-info" >Back</a>
