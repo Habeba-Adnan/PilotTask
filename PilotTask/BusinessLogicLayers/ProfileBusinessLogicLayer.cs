@@ -1,13 +1,17 @@
 ﻿using AutoMapper;
+using NLog;
+using NLog.LayoutRenderers;
 using PilotTask.DataAccessLayers;
 using PilotTask.Models;
-using PilotTask.ViewModels;
+using PilotTask.ViewModels.ProfilesViewModel;
 
 namespace PilotTask.BusinessLogicLayers
 {
     public class ProfileBusinessLogicLayer
     {
         private ProfileDataAccessLayer profileDataAccessLayer;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         public ProfileBusinessLogicLayer(ProfileDataAccessLayer profileDataAccessLayer)
         {
             this.profileDataAccessLayer = profileDataAccessLayer;
@@ -31,7 +35,8 @@ namespace PilotTask.BusinessLogicLayers
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while adding the profile.", ex);
+                logger.Error(ex,"An error occurred while adding the profile.");
+                throw;
             }
         }
 
@@ -43,7 +48,8 @@ namespace PilotTask.BusinessLogicLayers
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while deleting the profile.", ex);
+                logger.Error(ex,"An error occurred while deleting the profile.");
+                throw;
             }
         }
 
@@ -64,7 +70,8 @@ namespace PilotTask.BusinessLogicLayers
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while Updating the profile.", ex);
+                logger.Error(ex,"An error occurred while Updating the profile.");
+                throw;
             }
         }
 
@@ -86,7 +93,8 @@ namespace PilotTask.BusinessLogicLayers
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while retrieving all profiles.", ex);
+                logger.Error(ex,"An error occurred while retrieving all profiles.");
+                throw;
             }
         }
 
@@ -107,7 +115,8 @@ namespace PilotTask.BusinessLogicLayers
                 };
             }
             catch (Exception ex) {
-                throw new ApplicationException("An error occurred while Retrieving the profile.", ex);
+                logger.Error(ex,"An error occurred while Retrieving the profile.");
+                throw;
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿@model TaskViewModel
+﻿@model TaskDeleteViewModel
 
 @{
     ViewBag.Title = "Delete Task";
@@ -7,13 +7,14 @@
 <h2>Delete Task</h2>
 
 <h3>Are you sure you want to delete this profile?</h3>
-<h4>@Model.TaskName</h4>
-<p>Task Description: @Model.TaskDescription</p>
-<p>Start Time: @Model.StartTime.ToShortDateString()</p>
-<p>Status: @Model.Status</p>
+<h4>@Model.task.TaskName</h4>
+<p>Task Description: @Model.task.TaskDescription</p>
+<p>Start Time: @Model.task.StartTime.ToShortDateString()</p>
+<p>Status: @Model.task.Status</p>
 
 <form asp-action="DeleteConfirmed" method="post">
-    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="task.Id" />
+    <input type="hidden" asp-for="ProfileId" />
     <button type="submit" class="btn btn-danger">Delete</button> |
-    <a asp-action="Details"  asp-route-Id="@Model.Id"class="btn btn-secondary">Back</a>
+    <a asp-action="Details"  asp-route-Id="@Model.task.Id"class="btn btn-secondary">Back</a>
 </form>

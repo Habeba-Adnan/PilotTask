@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using NLog;
 using System.Data;
 
 namespace PilotTask.Helpers
@@ -7,6 +8,7 @@ namespace PilotTask.Helpers
     {
       
         private readonly string connectionString;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public DatabaseHelper(IConfiguration configuration)
         {
@@ -21,39 +23,58 @@ namespace PilotTask.Helpers
 
         public void ExecuteNonQuery(string StoredProcedure , SqlParameter[] sqlParameters )
         {
-            using (SqlConnection sqlConnection = GetSqlConnection())
+            try
             {
-                using (SqlCommand sqlCommand = new SqlCommand(StoredProcedure, sqlConnection)) 
+                using (SqlConnection sqlConnection = GetSqlConnection())
                 {
-                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
-                    if (sqlParameters != null)
+                    using (SqlCommand sqlCommand = new SqlCommand(StoredProcedure, sqlConnection))
                     {
-                        sqlCommand.Parameters.AddRange(sqlParameters);
+                        sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                        if (sqlParameters != null)
+                        {
+                            sqlCommand.Parameters.AddRange(sqlParameters);
+                        }
+                        sqlConnection.Open();
+                        sqlCommand.ExecuteNonQuery();
                     }
-                    sqlConnection.Open();
-                    sqlCommand.ExecuteNonQuery();
                 }
             }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Error executing non-query stored procedure");
+                throw;
+               
+            }
+
         }
 
         public DataTable ExecuteQuery(string StoredProcedure, SqlParameter[] sqlParameters)
         {
-            using (SqlConnection sqlConnection = GetSqlConnection())
+            try
             {
-                using (SqlCommand sqlCommand = new SqlCommand(StoredProcedure, sqlConnection))
+                using (SqlConnection sqlConnection = GetSqlConnection())
                 {
-                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
-                    if (sqlParameters != null)
+                    using (SqlCommand sqlCommand = new SqlCommand(StoredProcedure, sqlConnection))
                     {
-                        sqlCommand.Parameters.AddRange(sqlParameters);
-                    }
+                        sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                        if (sqlParameters != null)
+                        {
+                            sqlCommand.Parameters.AddRange(sqlParameters);
+                        }
 
-                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
-                    DataTable dataTable = new DataTable();
-                    sqlDataAdapter.Fill(dataTable);
-                    return dataTable;
+                        SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+                        DataTable dataTable = new DataTable();
+                        sqlDataAdapter.Fill(dataTable);
+                        return dataTable;
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Error executing query stored procedure");
+                throw;
+            }
+
         }
     }
 }

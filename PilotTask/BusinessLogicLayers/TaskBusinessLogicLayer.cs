@@ -1,11 +1,14 @@
-﻿using PilotTask.DataAccessLayers;
+﻿using NLog;
+using PilotTask.DataAccessLayers;
 using PilotTask.Models;
+using PilotTask.ViewModels.TasksViewModel;
 
 namespace PilotTask.BusinessLogicLayers
 {
     public class TaskBusinessLogicLayer
     {
         private TaskDataAccessLayer taskDataAccessLayer;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         public TaskBusinessLogicLayer(TaskDataAccessLayer taskDataAccessLayer) 
         {
             this.taskDataAccessLayer = taskDataAccessLayer;
@@ -27,7 +30,8 @@ namespace PilotTask.BusinessLogicLayers
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while adding the task.", ex);
+               logger.Error(ex,"An error occurred while adding the task.");
+                throw;
             }
         }
         public void DeleteTask(int Id)
@@ -38,7 +42,8 @@ namespace PilotTask.BusinessLogicLayers
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while deleting the task.", ex);
+                logger.Error(ex,"An error occurred while deleting the task.");
+                throw;
             }
         }
         public void UpdateTask(TaskViewModel taskViewModel)
@@ -59,7 +64,8 @@ namespace PilotTask.BusinessLogicLayers
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while Updating the task.", ex);
+                logger.Error(ex,"An error occurred while Updating the task.");
+                throw;
             }
         }
         public List<TaskViewModel> GetTasks()
@@ -80,7 +86,9 @@ namespace PilotTask.BusinessLogicLayers
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while Retrieving all tasks.", ex);
+               logger.Error
+                    (ex,"An error occurred while Retrieving all tasks.");
+                throw; 
             }
         }
 
@@ -105,7 +113,8 @@ namespace PilotTask.BusinessLogicLayers
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while Retrieving the task.", ex);
+               logger.Error(ex,"An error occurred while Retrieving the task.");
+                throw;
             }
         }
 
@@ -127,7 +136,8 @@ namespace PilotTask.BusinessLogicLayers
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while Retrieving all tasks.", ex);
+                logger.Error(ex,"An error occurred while Retrieving all tasks.");
+                throw;
             }
         }
 

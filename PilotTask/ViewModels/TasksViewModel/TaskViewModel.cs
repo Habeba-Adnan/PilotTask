@@ -1,7 +1,7 @@
 ﻿using PilotTask.Validations;
 using System.ComponentModel.DataAnnotations;
 
-namespace PilotTask.ViewModels
+namespace PilotTask.ViewModels.TasksViewModel
 {
     public class TaskViewModel
     {

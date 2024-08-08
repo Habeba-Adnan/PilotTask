@@ -1,4 +1,4 @@
-﻿@model ProfileViewModel
+﻿@model ProfileDetailsViewModel
 
 @{
     ViewBag.Title = "Profile Details";
@@ -11,19 +11,19 @@
 
 <dl class="row">
     <dt class="col-sm-2">First Name</dt>
-    <dd class="col-sm-10">@Model.FirstName</dd>
+    <dd class="col-sm-10">@Model.profile.FirstName</dd>
 
     <dt class="col-sm-2">Last Name</dt>
-    <dd class="col-sm-10">@Model.LastName</dd>
+    <dd class="col-sm-10">@Model.profile.LastName</dd>
 
     <dt class="col-sm-2">Date of Birth</dt>
-    <dd class="col-sm-10">@Model.DateOfBirth.ToShortDateString()</dd>
+    <dd class="col-sm-10">@Model.profile.DateOfBirth.ToShortDateString()</dd>
 
     <dt class="col-sm-2">Phone Number</dt>
-    <dd class="col-sm-10">@Model.PhoneNumber</dd>
+    <dd class="col-sm-10">@Model.profile.PhoneNumber</dd>
 
     <dt class="col-sm-2">Email Id</dt>
-    <dd class="col-sm-10">@Model.EmailId</dd>
+    <dd class="col-sm-10">@Model.profile.EmailId</dd>
 
         <dt class="col-sm-2">Tasks</dt>
 
@@ -31,9 +31,9 @@
             <form asp-action="Details" asp-controller="Task" method="get">
                 <select name="Id" class="form-control" onchange="this.form.submit()">
                     <option value="">Select a task</option>
-                    @if (ViewBag.Tasks != null)
+                    @if (Model.tasks != null)
         {
-                    @foreach (var task in ViewBag.Tasks)
+                    @foreach (var task in Model.tasks)
                     {
                         <option value="@task.Id">@task.TaskName</option>
                     }
@@ -45,5 +45,5 @@
 </dl>
 </div>
 
-<a asp-action="Update" asp-route-ProfileId="@Model.ProfileId" class="btn btn-warning">Update</a>
+<a asp-action="Update" asp-route-ProfileId="@Model.profile.ProfileId" class="btn btn-warning">Update</a>
 <a asp-action="Index" class="btn btn-info" >Back</a>

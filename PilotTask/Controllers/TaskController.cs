@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NLog;
 using PilotTask.BusinessLogicLayers;
 using PilotTask.Models;
-using PilotTask.ViewModels;
+using PilotTask.ViewModels.TasksViewModel;
 using System.Threading.Tasks;
 
 namespace PilotTask.Controllers
@@ -11,6 +12,7 @@ namespace PilotTask.Controllers
     {
         private TaskBusinessLogicLayer taskBusinessLogicLayer;
         private ProfileBusinessLogicLayer profileBusinessLogicLayer;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         public TaskController(TaskBusinessLogicLayer taskBusinessLogicLayer, ProfileBusinessLogicLayer profileBusinessLogicLayer) 
         {
             this.taskBusinessLogicLayer = taskBusinessLogicLayer;
@@ -20,68 +22,149 @@ namespace PilotTask.Controllers
 
         public IActionResult Index()
         {
-            List<TaskViewModel> taskVsiewModels  = taskBusinessLogicLayer.GetTasks();
-            return View("Index", taskVsiewModels);
+            try
+            {
+                List<TaskViewModel> taskVsiewModels = taskBusinessLogicLayer.GetTasks();
+                return View("Index", taskVsiewModels);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Error occurred in Index action.");
+                return StatusCode(500, "Internal server error");
+            }
+
         }
 
         public IActionResult Details(int Id)
         {
-            TaskViewModel taskViewModel  = taskBusinessLogicLayer.GetTaskById(Id);
+            try
+            {
+                TaskViewModel taskViewModel = taskBusinessLogicLayer.GetTaskById(Id);
 
-            return View("Details", taskViewModel);
+                return View("Details", taskViewModel);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Error occurred in Details action.");
+                return StatusCode(500, "Internal server error");
+            }
+
         }
 
         public IActionResult Create(int profileId)
         {
-            ViewBag.ProfileId = profileId;
-            return View();
+            try
+            {
+                TaskCreateViewModel taskCreateViewModel = new TaskCreateViewModel
+                {
+                    Task = new TaskViewModel(),
+                   
+                    ProfileId = profileId
+                };
+                return View(taskCreateViewModel);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Error occurred in Create action.");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPost]
-        public IActionResult Create(TaskViewModel taskViewModel)
+        public IActionResult Create(TaskCreateViewModel taskCreateViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                taskBusinessLogicLayer.AddTask(taskViewModel);
-                return RedirectToAction("Index","Profile");
-            }
+                if (ModelState.IsValid)
+                {
+                    taskCreateViewModel.Task.ProfileId = taskCreateViewModel.ProfileId; // Ensure ProfileId is set
+                    taskBusinessLogicLayer.AddTask(taskCreateViewModel.Task);
+                    return RedirectToAction("Index", "Profile");
+                }
 
-            ViewBag.ProfileId = taskViewModel.ProfileId;
-            return View(taskViewModel);
+                return View(taskCreateViewModel);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Error occurred in Create action.");
+                return StatusCode(500, "Internal server error");
+            }
         }
+
 
         public IActionResult Update(int Id)
         {
-            TaskViewModel taskViewModel  = taskBusinessLogicLayer.GetTaskById(Id);
-            return View(taskViewModel);
+            try
+            {
+                TaskViewModel taskViewModel = taskBusinessLogicLayer.GetTaskById(Id);
+                return View(taskViewModel);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Error occurred in Update action.");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
-        [HttpPost]
+
+            [HttpPost]
         public IActionResult Update(TaskViewModel taskViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                taskBusinessLogicLayer.UpdateTask(taskViewModel);
-                
-                return RedirectToAction("Details", new { Id = taskViewModel.Id });
+                if (ModelState.IsValid)
+                {
+                    taskBusinessLogicLayer.UpdateTask(taskViewModel);
+
+                    return RedirectToAction("Details", new { Id = taskViewModel.Id });
+                }
+
+                return View(taskViewModel);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Error occurred in Update action.");
+                return StatusCode(500, "Internal server error");
             }
 
-            return View(taskViewModel);
         }
 
         public IActionResult Delete(int Id)
         {
-            TaskViewModel taskViewModel  = taskBusinessLogicLayer.GetTaskById(Id);
-            TempData["ProfileId"] = taskViewModel.ProfileId;
-            return View(taskViewModel);
+            try
+            {
+                TaskViewModel taskViewModel = taskBusinessLogicLayer.GetTaskById(Id);
+               
+                TaskDeleteViewModel taskDeleteViewModel  = new TaskDeleteViewModel()
+                {
+                    task= taskViewModel ,
+                    ProfileId = taskViewModel.ProfileId
+                };
+                return View(taskDeleteViewModel);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Error occurred in Delete action.");
+                return StatusCode(500, "Internal server error");
+            }
+
         }
 
         [HttpPost]
-        public IActionResult DeleteConfirmed(int Id)
+        public IActionResult DeleteConfirmed(TaskDeleteViewModel taskDeleteViewModel)
         {
-            int ProfileId = (int)TempData["ProfileId"];
-            taskBusinessLogicLayer.DeleteTask(Id);
-            return RedirectToAction("Details","Profile", new { ProfileId = ProfileId });
+            try
+            {
+               
+                taskBusinessLogicLayer.DeleteTask(taskDeleteViewModel.task.Id);
+                return RedirectToAction("Details", "Profile", new { ProfileId = taskDeleteViewModel.ProfileId });
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Error occurred in DeleteConfirmed action.");
+                return StatusCode(500, "Internal server error");
+            }
+
 
         }
 
